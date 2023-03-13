@@ -8,9 +8,10 @@
     "esModuleInterop": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "useUnknownInCatchVariables": false
   },
   "exclude": [
-    "node_modules"
-  ]
+  "node_modules"
+  ],
 }

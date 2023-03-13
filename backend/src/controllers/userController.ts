@@ -1,40 +1,40 @@
 import * as jwt from 'jsonwebtoken'
-import * as express from "express";
-const User = require('../models/userModel')
+import { Request, Response } from "express";
+import { IUser, UserModel } from '../models/userModel';
 
 const createToken = (_id: number) => {
     return jwt.sign({_id}, process.env.JWT_SECRET!, { expiresIn: "3d" })
 }
 
 // login a user
-const loginUser = async (req: express.Request, res: express.Response) => {
+const loginUser = async (req: Request, res: Response) => {
     const {email, password} = req.body
 
     try {
-        const user = await User.login(email, password)
+        const user = await UserModel.login!(email, password)
 
         // create a token
         const token = createToken(user._id)
         
         res.status(200).json({email, token})
     } catch (error) {
-        res.status(400).json({error: "Error login"})
+        res.status(400).json({error: error.message})
     } 
 }
 
 // signup a user
-const signupUser = async (req: express.Request, res: express.Response) => {
-    const {email, password} = req.body
+const signupUser = async (req: Request, res: Response) => {
+    const {pseudo, email, password} = req.body
 
     try {
-        const user = await User.signup(email, password)
+        const user: IUser = await UserModel.signup!(pseudo, email, password)
 
         // create a token
         const token = createToken(user._id)
 
-        res.status(200).json({email, token})
+        res.status(200).json({pseudo, email, token})
     } catch (error) {
-        res.status(400).json({error: "Error signup"})
+        res.status(400).json({error: error.message})
     }
 }
 
