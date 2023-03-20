@@ -23,7 +23,7 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   const token = authorization.split(" ")[1];
 
   try {
-    const { _id } = jwt.verify(token, process.env.SECRET!) as JwtPayload;
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
     req.user = await UserModel.findOne({ _id }).select("_id");
     next();
