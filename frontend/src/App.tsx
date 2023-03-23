@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 import { styled, globalStyles } from "../stitches.config";
-import { Home } from "./app/index"
+import { Home } from "./app/index";
 
 function App() {
   useEffect(() => {
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
       </Routes>
     </Container>
-  )
+  );
 }
 
 const Container = styled("main", {
@@ -22,7 +22,7 @@ const Container = styled("main", {
   margin: "0 auto",
   maxWidth: "1400px",
 
-  background: "red"
-})
+  // background: "red"
+});
 
-export default App
+export default App;
