@@ -15,12 +15,14 @@ export const ArtilceForm: React.FC = () => {
     e.preventDefault();
 
     const article = { title, description, theme };
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDFmMTkwNTE0NzM2OTkwZGYyMjljODIiLCJpYXQiOjE2Nzk3NTk2MjEsImV4cCI6MTY4MDAxODgyMX0.QuUBSWYYkICpsmVL0OQPqF96JZ8bPQKMzge0LqZsrwc";
 
     const res = await fetch("http://localhost:3001/api/articles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "Authorization":
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(article),
     });
@@ -50,12 +52,11 @@ export const ArtilceForm: React.FC = () => {
         className={emptyFields.includes("title") ? "error" : ""}
       />
       <Label>Description:</Label>
-      <Input
-        type="text"
+      <Textarea
         onChange={(e) => setDescription(e.target.value)}
         value={description}
         className={emptyFields.includes("description") ? "error" : ""}
-      />
+      ></Textarea>
       <Label>Theme:</Label>
       <Input
         type="text"
@@ -90,6 +91,22 @@ const Input = styled("input", {
   border: "1px solid $lightGray",
   borderRadius: "4px",
   outline: "none",
+
+  ".error": {
+    border: "1px solid #e7195a",
+  },
+});
+
+const Textarea = styled("textarea", {
+  padding: "10px",
+  marginTop: "10px",
+  marginBottom: "20px",
+  width: "100%",
+  height: "150px",
+  border: "1px solid $lightGray",
+  borderRadius: "4px",
+  outline: "none",
+  resize: "none",
 
   ".error": {
     border: "1px solid #e7195a",

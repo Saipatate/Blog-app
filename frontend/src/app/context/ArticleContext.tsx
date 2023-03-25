@@ -3,7 +3,8 @@ import { createContext, useReducer, ReactNode, FC } from "react";
 interface Article {
   _id: string;
   title: string;
-  content: string;
+  description: string;
+  theme: string;
 }
 
 interface ArticlesState {

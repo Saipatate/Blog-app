@@ -1,30 +1,51 @@
 import { styled } from "@stitches/react";
 import { HiOutlineTrash } from "react-icons/hi";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { useArticlesContext } from "../../hook/useArticlesContext";
 
-export const ArticleDetails: React.FC = () => {
+type Props = {
+  article: any;
+};
+
+export const ArticleDetails: React.FC<Props> = ({ article }) => {
+  const { dispatch } = useArticlesContext();
+
+  const handleClick = async () => {
+    const res = await fetch(
+      "http://localhost:3001/api/articles/" + article._id,
+      {
+        method: "DELETE",
+      }
+    );
+    const json = await res.json();
+
+    if (res.ok) {
+      dispatch({ type: "DELETE_ARTICLE", payload: json });
+    }
+  };
+
   return (
     <Container>
       <Header>
-        <Title>Title</Title>
-        <DeleteIcon>
+        <Title>{article.title}</Title>
+        <DeleteIcon onClick={handleClick}>
           <HiOutlineTrash style={{ fontSize: "22px", color: "#111" }} />
         </DeleteIcon>
       </Header>
-      <Content>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio
-        modi ratione nulla quisquam sint inventore placeat. Neque et vel ab
-        laboriosam! Recusandae sit repellendus quas sunt veritatis architecto
-        aliquam inventore.
-      </Content>
+      <Content>{article.description}</Content>
       <Footer>
-        <Tag>tags</Tag>
-        <Time>2 minutes</Time>
+        <Tag>{article.theme}</Tag>
+        <Time>
+          {formatDistanceToNow(new Date(article.createdAt), {
+            addSuffix: true,
+          })}
+        </Time>
       </Footer>
     </Container>
   );
 };
 
-const Container = styled("section", {
+const Container = styled("div", {
   backgroundColor: "$white",
   width: "700px",
   padding: "15px",
@@ -57,6 +78,7 @@ const Content = styled("p", {
   fontSize: "$xs",
   color: "$darkGray",
   marginBottom: "20px",
+  wordWrap: "break-word",
 });
 
 const Footer = styled("footer", {
