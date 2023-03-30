@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { styled } from "@stitches/react";
 import { ArticleDetails, ArtilceForm } from "./components";
-import { useArticlesContext } from "../hook/useArticlesContext";
+import { useArticlesContext } from "../../hook/useArticlesContext"
 import { z } from "zod";
+import { useAuthContext } from './../../hook/useAuthContext';
 
 const ArtilceSchema = z.array(
   z.object({
@@ -15,10 +16,13 @@ const ArtilceSchema = z.array(
 
 export const Home: React.FC = () => {
   const { articles, dispatch } = useArticlesContext();
+  const { user } = useAuthContext()
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const res = await fetch("http://localhost:3001/api/articles");
+      const res = await fetch("http://localhost:3001/api/articles", {
+        headers: {'Authorization': `Bearer ${user?.token}`},
+      });
       const json = await res.json();
 
       if (res.ok) {
@@ -48,8 +52,9 @@ const Section = styled("section", {
   display: "flex",
   alignItems: "start",
   justifyContent: "space-between",
-  gap: "40px",
-  width: "100%",
+  gap: "80px",
+  maxWidth: "1400px",
+  margin: "0 auto"
   // borderTop: "1px solid $dark"
 });
 

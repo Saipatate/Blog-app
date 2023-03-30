@@ -1,7 +1,7 @@
 import { styled } from "@stitches/react";
 import { HiOutlineTrash } from "react-icons/hi";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import { useArticlesContext } from "../../hook/useArticlesContext";
+import { useArticlesContext } from "../../../hook/useArticlesContext";
 
 type Props = {
   article: any;
