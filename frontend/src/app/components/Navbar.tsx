@@ -16,7 +16,7 @@ export const Navbar: React.FC = () => {
       <Title>MyBlog</Title>
       {user && (
         <UserContainer>
-          <Name>{user.pseudo}</Name>
+          <Name>{user.email}</Name>
           <Pircture src="/img/user-default.jpg" />
           <Button onClick={handleClick}>Log out</Button>
         </UserContainer>
@@ -37,6 +37,11 @@ const Nav = styled("nav", {
   justifyContent: "space-between",
   backgroundColor: "$white",
   padding: "30px 10%",
+
+  "@media screen and (max-width: 640px)": {
+    flexDirection: "column",
+    gap: "20px",
+  },
 });
 
 const Title = styled("h1", {
@@ -48,9 +53,21 @@ const UserContainer = styled("div", {
   display: "flex",
   alignItems: "center",
   gap: "15px",
+
+  "@media screen and (max-width: 400px)": {
+    flexDirection: "column",
+    gap: "20px",
+  },
 });
 
-const Button = styled("button", {});
+const Button = styled("button", {
+  backgroundColor: "$green",
+  border: "none",
+  color: "$white",
+  padding: "8px 12px",
+  borderRadius: "4px",
+  cursor: "pointer",
+});
 
 const Name = styled("p", {
   fontSize: "$xs",
@@ -66,4 +83,24 @@ const Pircture = styled("img", {
 const Links = styled("div", {
   display: "flex",
   alignItems: "center",
+  gap: "20px",
+
+  a: {
+    color: "$green",
+    textDecoration: "none",
+    position: "relative",
+
+    "&::after": {
+      content: "",
+      background: "$green",
+      height: "4px",
+      position: "absolute",
+      left: "0",
+      bottom: "-5px",
+    },
+
+    "&:hover::after": {
+      width: "100%",
+    },
+  },
 });

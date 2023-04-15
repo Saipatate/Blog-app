@@ -18,7 +18,7 @@ export const { styled, getCssText } = createStitches({
     },
     shadows: {
       dark: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-    }
+    },
   },
 });
 

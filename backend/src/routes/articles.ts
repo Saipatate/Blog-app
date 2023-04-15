@@ -6,11 +6,7 @@ const {
     deleteArticle,
     updateArticle
 } = require("../controllers/articleController")
-const requireAuth = require("../middleware/requireAuth")
 const router = express.Router();
-
-// require auth for all article routes
-router.use(requireAuth)
 
 // GET all articles
 router.get("/", getArticles)

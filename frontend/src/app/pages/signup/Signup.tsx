@@ -1,29 +1,21 @@
 import { styled } from "@stitches/react";
 import { useState } from "react";
-import { useSignup } from './../../hook/useSignup';
-
+import { useSignup } from "./../../hook/useSignup";
 
 export const Signup: React.FC = () => {
-  const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signup, error, isLoading } = useSignup()
+  const { signup, error, isLoading } = useSignup();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    await signup(pseudo, email, password)
-  }
+    await signup(email, password);
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
       <Title>Sign up</Title>
-      <Label>Pseudo:</Label>
-      <Input
-        type="text"
-        onChange={(e) => setPseudo(e.target.value)}
-        value={pseudo}
-      />
       <Label>Email:</Label>
       <Input
         type="email"
@@ -37,7 +29,7 @@ export const Signup: React.FC = () => {
         value={password}
       />
       <Button disabled={isLoading}>Sign up</Button>
-      {error && <Error>{error.message}</Error>}
+      {error && <Error>{error}</Error>}
     </Form>
   );
 };

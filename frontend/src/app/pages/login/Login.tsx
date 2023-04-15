@@ -1,18 +1,17 @@
 import { styled } from "@stitches/react";
 import { useState } from "react";
-import { useLogin } from './../../hook/useLogin';
-
+import { useLogin } from "./../../hook/useLogin";
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, error, isLoading } = useLogin()
+  const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    await login(email, password)
-  }
+    await login(email, password);
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -30,7 +29,7 @@ export const Login: React.FC = () => {
         value={password}
       />
       <Button disabled={isLoading}>Log in</Button>
-      {error && <Error>{error.message}</Error>}
+      {error && <Error>{error}</Error>}
     </Form>
   );
 };

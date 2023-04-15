@@ -12,7 +12,7 @@ export const ArticleDetails: React.FC<Props> = ({ article }) => {
 
   const handleClick = async () => {
     const res = await fetch(
-      "http://localhost:3001/api/articles/" + article._id,
+      import.meta.env.VITE_APP + "articles/" + article._id,
       {
         method: "DELETE",
       }
@@ -50,6 +50,10 @@ const Container = styled("div", {
   width: "700px",
   padding: "15px",
   borderRadius: "8px",
+
+  "@media screen and (max-width: 800px)": {
+    width: "100%",
+  },
 });
 
 const Header = styled("header", {

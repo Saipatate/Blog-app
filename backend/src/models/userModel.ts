@@ -3,16 +3,11 @@ import * as bcrypt from "bcrypt";
 import validator from "validator";
 
 interface IUser extends Document {
-    pseudo: any;
     email: string;
     password: string;
 }
 
 const userSchema: Schema<IUser> = new Schema({
-    pseudo: {
-        type: String,
-        unique: true
-    },
     email: {
         type: String,
         required: true,
@@ -26,11 +21,11 @@ const userSchema: Schema<IUser> = new Schema({
 
 // static signup method
 interface UserModel extends Model<IUser> {
-    signup?(pseudo: any, email: string, password: string): Promise<IUser>
+    signup?(email: string, password: string): Promise<IUser>
     login?(email: string, password: string): Promise<IUser>
 }
 
-userSchema.statics.signup = async function(pseudo, email, password): Promise<IUser> {
+userSchema.statics.signup = async function(email, password): Promise<IUser> {
     
     // validation
     if (!email || !password) {
@@ -44,14 +39,9 @@ userSchema.statics.signup = async function(pseudo, email, password): Promise<IUs
     }
 
     const exists = await this.findOne({email});
-    const pseudoExists = await this.findOne({pseudo});
 
     if (exists) {
         throw Error('Email already in use');
-    }
-
-    if (pseudoExists) {
-        throw Error('Pseudo already in use')
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -68,7 +58,7 @@ userSchema.statics.login = async function(email, password) {
     if (!email || !password) {
       throw Error('All fields must be filled')
     }
-  
+
     const user = await this.findOne({ email })
     if (!user) {
       throw Error('Incorrect email')

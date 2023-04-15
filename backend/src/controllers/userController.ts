@@ -27,7 +27,7 @@ const signupUser = async (req: Request, res: Response) => {
     const {pseudo, email, password} = req.body
 
     try {
-        const user: IUser = await UserModel.signup!(pseudo, email, password)
+        const user: IUser = await UserModel.signup!(email, password)
 
         // create a token
         const token = createToken(user._id)

@@ -13,6 +13,7 @@ const articleSchema = new Schema({
     },
     description: {
         type: String,
+        max: 430,
         required: true
     },
 }, { timestamps: true })

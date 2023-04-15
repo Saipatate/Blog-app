@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@stitches/react";
-import { ArticleDetails, ArtilceForm } from "./components";
-import { useArticlesContext } from "../../hook/useArticlesContext"
+import { ArticleDetails, ArtilceForm, Pagination } from "./components";
+import { useArticlesContext } from "../../hook/useArticlesContext";
 import { z } from "zod";
-import { useAuthContext } from './../../hook/useAuthContext';
 
 const ArtilceSchema = z.array(
   z.object({
@@ -15,13 +14,16 @@ const ArtilceSchema = z.array(
 );
 
 export const Home: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(4);
   const { articles, dispatch } = useArticlesContext();
-  const { user } = useAuthContext()
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const res = await fetch("http://localhost:3001/api/articles", {
-        headers: {'Authorization': `Bearer ${user?.token}`},
+      const res = await fetch(import.meta.env.VITE_APP + "articles", {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       const json = await res.json();
 
@@ -34,13 +36,23 @@ export const Home: React.FC = () => {
     fetchArticles();
   }, [dispatch]);
 
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPosts = articles?.slice(firstPostIndex, lastPostIndex);
+
   return (
     <Section>
       <ArticleDetailsContainer>
         {articles &&
-          articles.map((article) => {
+          currentPosts?.map((article) => {
             return <ArticleDetails article={article} key={article._id} />;
           })}
+        <Pagination
+          totalArticles={articles?.length}
+          postsPerPage={postsPerPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        />
       </ArticleDetailsContainer>
       <ArtilceForm />
     </Section>
@@ -54,12 +66,21 @@ const Section = styled("section", {
   justifyContent: "space-between",
   gap: "80px",
   maxWidth: "1400px",
-  margin: "0 auto"
-  // borderTop: "1px solid $dark"
+  margin: "0 auto",
+
+  "@media screen and (max-width: 1270px)": {
+    width: "100%",
+    flexDirection: "column-reverse",
+    alignItems: "center",
+  },
 });
 
 const ArticleDetailsContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
   gap: "30px",
+
+  "@media screen and (max-width: 800px)": {
+    width: "100%",
+  },
 });

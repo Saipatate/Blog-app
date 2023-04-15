@@ -1,19 +1,15 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
-type SignupError = {
-  message: string;
-};
-
 type SignupRes = {
   email: string;
   password: string;
-  error: SignupError;
-  token: string
+  error: null;
+  token: string;
 };
 
 export const useLogin = () => {
-  const [error, setError] = useState<SignupError | null>(null);
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
 
@@ -21,7 +17,7 @@ export const useLogin = () => {
     setIsLoading(true);
     setError(null);
 
-    const res = await fetch("http://localhost:3001/api/user/login", {
+    const res = await fetch(import.meta.env.VITE_APP + "user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -35,6 +31,7 @@ export const useLogin = () => {
     if (res.ok) {
       localStorage.setItem("user", JSON.stringify(json));
       dispatch({ type: "LOGIN", payload: json });
+      window.location.href = "/";
     }
   };
 

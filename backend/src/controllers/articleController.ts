@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { ArticleModel } from "../models/articleModel";
 
@@ -27,25 +27,17 @@ const getArticle = async (req: Request, res: Response) => {
 }
 
 // create a new article
-const createArticle = async (req: Request, res: Response) => {
+const createArticle = async (req: Request, res: Response, next: NextFunction) => {
     const {theme, title, description} = req.body
 
-    let empltyFields = []
-
-    if (!theme) {
-        empltyFields.push("theme")
-    }
-
-    if (!title) {
-        empltyFields.push("title")
-    }
-
-    if (!description) {
-        empltyFields.push("description")
-    }
+    let empltyFields: string[] = []
 
     if (empltyFields.length > 0) {
         return res.status(400).json({ error: "Please fill in all fileds", empltyFields })
+    }
+
+    if (description.length > 430) {
+        return res.status(400).json({ error: "Too many characters", empltyFields })
     }
 
     // add to the database
